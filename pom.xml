@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github</groupId>
+    <artifactId>hacep-docker-image</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>HACEP JVM Playground - Docker</name>
+
+    <properties>
+        <!-- Configurable properties for the build. -->
+        <docker.daemon.rest.url>unix:///var/run/docker.sock</docker.daemon.rest.url>
+        <docker.kie.repository>hacep</docker.kie.repository>
+        <docker.kie.artifacts.version>${project.version}</docker.kie.artifacts.version>
+        <timestamp>${maven.build.timestamp}</timestamp>
+
+        <!-- Properties for internal use. -->
+        <maven.build.timestamp.format>yyyyMMdd_HHmm</maven.build.timestamp.format>
+        <docker.run.timeout>120000</docker.run.timeout>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.22.1</version>
+                    <configuration>
+                        <!-- Global configuration. -->
+                        <dockerHost>${docker.daemon.rest.url}</dockerHost>
+                        <!-- Although no authentication on registry, set empty values. If not, plugin push goal fails. -->
+                        <images>
+                            <image>
+                                <name>hacep-jvm-playground</name>
+                                <alias>hacep</alias>
+                                <build>
+                                    <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
+                                </build>
+                                <run>
+                                    <ports>
+                                        <port>8161:8161</port>
+                                    </ports>
+                                </run>
+                            </image>
+                        </images>
+                        <authConfig>
+                            <username/>
+                            <password/>
+                        </authConfig>
+                        <useColor>true</useColor>
+                        <logDate>default</logDate>
+                        <verbose>true</verbose>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+    </build>
+</project>
