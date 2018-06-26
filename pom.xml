@@ -34,7 +34,7 @@
                         <!-- Although no authentication on registry, set empty values. If not, plugin push goal fails. -->
                         <images>
                             <image>
-                                <name>hacep-jvm-playground</name>
+                                <name>sanhajio/hacep-jvm-playground</name>
                                 <alias>hacep</alias>
                                 <build>
                                     <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
